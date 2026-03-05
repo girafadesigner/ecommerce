@@ -48,21 +48,49 @@ function validateEnvironment() {
 }
 
 function buildCorsOptions() {
+  const defaultAllowedOrigins = [
+    "https://girafadesigner.github.io",
+    "https://www.girafadesigner.github.io"
+  ];
+
+  function normalizeOrigin(value) {
+    return String(value || "")
+      .trim()
+      .replace(/\/+$/, "")
+      .toLowerCase();
+  }
+
   const corsOrigin = String(process.env.CORS_ORIGIN || "*").trim();
   if (!corsOrigin || corsOrigin === "*") {
-    return { origin: true };
+    return {
+      origin: true,
+      methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+      allowedHeaders: ["Content-Type", "Authorization"],
+      optionsSuccessStatus: 204
+    };
   }
 
   const allowed = corsOrigin
     .split(",")
-    .map((item) => item.trim())
+    .map((item) => normalizeOrigin(item))
     .filter(Boolean);
+
+  defaultAllowedOrigins.forEach((origin) => {
+    const normalized = normalizeOrigin(origin);
+    if (!allowed.includes(normalized)) {
+      allowed.push(normalized);
+    }
+  });
 
   return {
     origin(origin, callback) {
-      if (!origin || allowed.includes(origin)) return callback(null, true);
+      const normalizedOrigin = normalizeOrigin(origin);
+      if (!origin || allowed.includes(normalizedOrigin)) return callback(null, true);
       return callback(new Error("Origem CORS nao permitida."));
-    }
+    },
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    optionsSuccessStatus: 204
   };
 }
 
