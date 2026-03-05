@@ -1,0 +1,62 @@
+
+body {
+
+margin: 0;
+font-family: Arial;
+background: #f5f5f5;
+
+}
+
+
+.header {
+
+background: #2b2b2b;
+
+color: #ffd000;
+
+padding: 20px;
+
+display: flex;
+
+justify-content: space-between;
+
+}
+
+
+.grid {
+
+display: grid;
+
+grid-template-columns: repeat(auto-fill, 250px);
+
+gap: 20px;
+
+padding: 20px;
+
+}
+
+
+.card {
+
+background: white;
+
+padding: 15px;
+
+border-radius: 10px;
+
+}
+
+
+button {
+
+background: #ffd000;
+
+border: none;
+
+padding: 10px;
+
+cursor: pointer;
+
+width: 100%;
+
+}

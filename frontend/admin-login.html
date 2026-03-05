@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login Admin | Girafa Designer</title>
+    <link rel="icon" type="image/png" href="/assets/Logo.png" />
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="brand" href="/">
+          <img src="/assets/Logo.png" alt="Logo Girafa Designer" />
+          <strong>Girafa Designer</strong>
+        </a>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="panel" style="max-width: 520px; margin: 20px auto">
+        <h1>Painel Admin</h1>
+        <form id="loginForm" class="form-grid">
+          <input type="email" id="username" placeholder="Usuario" required class="full" />
+          <input type="password" id="password" placeholder="Senha" required class="full" />
+          <button type="submit" class="accent full">Entrar</button>
+          <button type="button" id="showForgotAdminBtn" class="secondary full">Esqueci minha senha</button>
+        </form>
+        <form id="forgotAdminForm" class="form-grid" style="display: none; margin-top: 12px">
+          <input type="email" id="forgotAdminUsername" placeholder="Usuario admin" required class="full" />
+          <input type="hidden" id="forgotAdminChannel" value="email" />
+          <button type="button" id="sendAdminCodeBtn" class="secondary full">Enviar codigo</button>
+          <input type="text" id="forgotAdminCode" placeholder="Codigo recebido (6 digitos)" class="full" />
+          <input type="password" id="forgotAdminNewPassword" placeholder="Nova senha (minimo 6)" class="full" />
+          <button type="submit" class="accent full">Redefinir senha admin</button>
+        </form>
+        <div id="loginMessage"></div>
+      </section>
+    </main>
+
+    <script src="/js/nav.js"></script>
+    <script src="/js/api.js"></script>
+    <script src="/js/admin-login.js"></script>
+  </body>
+</html>
+

@@ -1,0 +1,11 @@
+.env
+.env.*
+!.env.example
+node_modules
+server_out.log
+server_err.log
+database/*.db
+database/*.backup*
+database/*.pre_sqlcipher
+assets/uploads/*
+!assets/uploads/.gitkeep

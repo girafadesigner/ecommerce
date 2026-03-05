@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Girafa Designer | Maquinas e Insumos para Sublimacao</title>
+    <link rel="icon" type="image/png" href="/assets/Logo.png" />
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="brand" href="/">
+          <img src="/assets/Logo.png" alt="Logo Girafa Designer" />
+          <strong>Girafa Designer</strong>
+        </a>
+        <nav class="top-links">
+          <a href="#catalog">Produtos</a>
+          <a href="/cart">Carrinho <span class="badge" id="cartCount">0</span></a>
+          <a href="/account" id="accountLink">Entrar</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero-shell">
+        <div class="container hero-grid">
+          <article class="hero-copy">
+            <p class="eyebrow">Loja oficial Girafa Designer</p>
+            <h1>Monte seu estudio de sublimacao com equipamentos certos</h1>
+            <p class="hero-text">
+              Impressoras, prensas e insumos selecionados para quem quer produzir com qualidade e vender mais.
+            </p>
+            <div class="hero-cta-row">
+              <a href="#catalog" class="button accent">Ver catalogo</a>
+              <a href="/account" class="button ghost">Criar minha conta</a>
+            </div>
+            <div class="hero-stats">
+              <div>
+                <strong>+2.000</strong>
+                <span>Pedidos atendidos</span>
+              </div>
+              <div>
+                <strong>15 min</strong>
+                <span>Suporte no WhatsApp</span>
+              </div>
+              <div>
+                <strong>100%</strong>
+                <span>Produtos testados</span>
+              </div>
+            </div>
+          </article>
+
+          <aside class="hero-carousel" aria-label="Destaques da loja">
+            <div class="hero-carousel-track" id="heroCarouselTrack">
+              <article class="hero-slide is-active">
+                <img src="/assets/images/impressora.svg" alt="Impressora sublimatica" />
+                <div class="slide-content">
+                  <p class="slide-kicker">Destaque da semana</p>
+                  <h3>Impressoras profissionais</h3>
+                  <p>Alta definicao para producao diaria e acabamento premium.</p>
+                </div>
+              </article>
+              <article class="hero-slide">
+                <img src="/assets/images/prensa.svg" alt="Prensa termica" />
+                <div class="slide-content">
+                  <p class="slide-kicker">Mais vendidas</p>
+                  <h3>Prensas de alta pressao</h3>
+                  <p>Controle de temperatura estavel para transferencias perfeitas.</p>
+                </div>
+              </article>
+              <article class="hero-slide">
+                <img src="/assets/images/tinta.svg" alt="Tintas e insumos" />
+                <div class="slide-content">
+                  <p class="slide-kicker">Reposicao rapida</p>
+                  <h3>Tintas e papeis premium</h3>
+                  <p>Consistencia de cor para lotes grandes e entregas no prazo.</p>
+                </div>
+              </article>
+            </div>
+            <div class="hero-carousel-controls">
+              <button id="heroPrevBtn" class="button ghost" type="button" aria-label="Slide anterior">Anterior</button>
+              <div id="heroDots" class="hero-dots" aria-hidden="true"></div>
+              <button id="heroNextBtn" class="button ghost" type="button" aria-label="Proximo slide">Proximo</button>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="container trust-strip">
+        <article>
+          <strong>Entrega para todo Brasil</strong>
+          <span>Com acompanhamento do pedido</span>
+        </article>
+        <article>
+          <strong>Compra assistida</strong>
+          <span>Ajuda para escolher seu setup</span>
+        </article>
+        <article>
+          <strong>Pagamento flexivel</strong>
+          <span>PIX ou link via atendimento</span>
+        </article>
+      </section>
+
+      <section id="catalog" class="container catalog-section">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Catalogo</p>
+            <h2>Encontre o produto ideal para sua producao</h2>
+          </div>
+        </div>
+
+        <section class="filters">
+          <input type="text" id="searchInput" placeholder="Buscar produtos..." />
+          <select id="categorySelect">
+            <option value="">Todas categorias</option>
+          </select>
+          <input type="number" id="minPriceInput" placeholder="Preco minimo" min="0" step="0.01" />
+          <input type="number" id="maxPriceInput" placeholder="Preco maximo" min="0" step="0.01" />
+          <button id="filterBtn" class="accent">Filtrar</button>
+        </section>
+
+        <section>
+          <div class="grid" id="productsGrid"></div>
+        </section>
+      </section>
+    </main>
+
+    <script src="/js/nav.js"></script>
+    <script src="/js/api.js"></script>
+    <script src="/js/store.js"></script>
+    <script src="/js/internal-admin.js"></script>
+  </body>
+</html>
+

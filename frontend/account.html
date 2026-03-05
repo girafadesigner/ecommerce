@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Conta do Cliente | Girafa Designer</title>
+    <link rel="icon" type="image/png" href="/assets/Logo.png" />
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="brand" href="/">
+          <img src="/assets/Logo.png" alt="Logo Girafa Designer" />
+          <strong>Girafa Designer</strong>
+        </a>
+        <nav class="top-links">
+          <a href="/">Produtos</a>
+          <a href="/cart">Carrinho</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container account-page">
+      <h1>Minha conta</h1>
+      <div id="accountMessage"></div>
+
+      <section class="panel" id="sessionPanel" style="display: none">
+        <p id="customerProfile"></p>
+        <button id="logoutCustomerBtn" class="secondary">Sair da conta</button>
+        <hr style="margin: 14px 0; border: 0; border-top: 1px solid var(--line)" />
+        <h3 style="margin: 0 0 10px">Historico das ultimas compras</h3>
+        <div id="customerOrdersEmpty" style="display: none">Nenhuma compra encontrada.</div>
+        <div class="table-scroll" style="display: none" id="customerOrdersScroll">
+          <table id="customerOrdersTable" class="admin-table customer-orders-table">
+            <thead>
+              <tr>
+                <th>Pedido</th>
+                <th>Data</th>
+                <th>Status</th>
+                <th>Total</th>
+                <th>Itens</th>
+              </tr>
+            </thead>
+            <tbody id="customerOrdersBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel" id="authPanel">
+        <div class="tabs">
+          <button id="showLoginBtn" class="accent" type="button">Entrar</button>
+          <button id="showRegisterBtn" type="button">Cadastrar</button>
+        </div>
+
+        <form id="loginForm" class="form-grid" style="margin-top: 12px">
+          <input id="loginEmail" type="email" placeholder="Email" required class="full" />
+          <input id="loginPassword" type="password" placeholder="Senha" required class="full" />
+          <button type="submit" class="accent full">Entrar</button>
+          <button type="button" id="showForgotCustomerBtn" class="secondary full">Esqueci minha senha</button>
+        </form>
+
+        <form id="registerForm" class="form-grid" style="display: none; margin-top: 12px">
+          <input id="registerName" type="text" placeholder="Nome completo" required class="full" />
+          <input id="registerEmail" type="email" placeholder="Email" required />
+          <input id="registerPhone" type="text" placeholder="Telefone/WhatsApp" required />
+          <input id="registerPassword" type="password" placeholder="Senha (minimo 6)" required class="full" />
+          <button type="submit" class="accent full">Criar conta</button>
+        </form>
+
+        <form id="forgotCustomerForm" class="form-grid" style="display: none; margin-top: 12px">
+          <input id="forgotCustomerEmail" type="email" placeholder="Email cadastrado" required class="full" />
+          <input id="forgotCustomerChannel" type="hidden" value="email" />
+          <button type="button" id="sendCustomerCodeBtn" class="secondary full">Enviar codigo</button>
+          <input id="forgotCustomerCode" type="text" placeholder="Codigo recebido (6 digitos)" class="full" />
+          <input id="forgotCustomerNewPassword" type="password" placeholder="Nova senha (minimo 6)" class="full" />
+          <button type="submit" class="accent full">Redefinir senha</button>
+        </form>
+      </section>
+    </main>
+
+    <script src="/js/nav.js"></script>
+    <script src="/js/api.js"></script>
+    <script src="/js/account.js"></script>
+    <script src="/js/internal-admin.js"></script>
+  </body>
+</html>
+

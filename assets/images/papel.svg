@@ -1,0 +1,8 @@
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="600" fill="#f5f5f5"/>
+  <rect x="250" y="130" width="300" height="360" rx="18" fill="#ffffff" stroke="#2b2b2b" stroke-width="8"/>
+  <line x1="290" y1="210" x2="510" y2="210" stroke="#ffd000" stroke-width="12"/>
+  <line x1="290" y1="260" x2="510" y2="260" stroke="#ffd000" stroke-width="12"/>
+  <line x1="290" y1="310" x2="510" y2="310" stroke="#ffd000" stroke-width="12"/>
+  <text x="400" y="530" text-anchor="middle" font-size="42" fill="#2b2b2b" font-family="Arial">Papel A4</text>
+</svg>

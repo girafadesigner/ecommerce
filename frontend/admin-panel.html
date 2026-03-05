@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin | Girafa Designer</title>
+    <link rel="icon" type="image/png" href="/assets/Logo.png" />
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="brand" href="/">
+          <img src="/assets/Logo.png" alt="Logo Girafa Designer" />
+          <strong>Girafa Designer</strong>
+        </a>
+        <nav class="top-links">
+          <a href="/">Loja</a>
+          <a href="#" id="logoutBtn">Sair</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container admin-layout">
+      <aside class="admin-sidebar panel">
+        <h2>Painel Admin</h2>
+        <nav class="admin-nav">
+          <button type="button" class="admin-nav-btn is-active" data-admin-section="dashboard">
+            Dashboard
+          </button>
+          <button type="button" class="admin-nav-btn" data-admin-section="orders">
+            Pedidos
+          </button>
+          <button type="button" class="admin-nav-btn" data-admin-section="production">
+            Producao
+          </button>
+          <button type="button" class="admin-nav-btn" data-admin-section="orders-history">
+            Historico de vendas
+          </button>
+          <button type="button" class="admin-nav-btn" data-admin-section="products">
+            Produtos
+          </button>
+          <button type="button" class="admin-nav-btn" data-admin-section="manual-sales">
+            Vendas manuais
+          </button>
+          <button type="button" class="admin-nav-btn" data-admin-section="inventory-purchases">
+            Compras estoque
+          </button>
+          <button type="button" class="admin-nav-btn" data-admin-section="customers">
+            Clientes
+          </button>
+          <button type="button" class="admin-nav-btn" data-admin-section="security">
+            Seguranca
+          </button>
+        </nav>
+      </aside>
+
+      <section>
+        <div id="adminMessage"></div>
+
+        <section class="admin-section is-active" data-admin-section-content="dashboard">
+          <section class="panel">
+            <div class="dashboard-head">
+              <h1>Dashboard de Vendas</h1>
+              <div class="row-actions">
+                <select id="dashboardRange">
+                  <option value="today">Hoje</option>
+                  <option value="7">Ultimos 7 dias</option>
+                  <option value="30" selected>Ultimos 30 dias</option>
+                  <option value="90">Ultimos 90 dias</option>
+                  <option value="all">Tudo</option>
+                </select>
+                <button id="refreshDashboardBtn" class="accent" type="button">Atualizar</button>
+              </div>
+            </div>
+
+            <div class="dashboard-grid">
+              <article class="metric-card">
+                <span>Caixa Recebido</span>
+                <strong id="metricRevenue">R$ 0,00</strong>
+              </article>
+              <article class="metric-card">
+                <span>A Receber</span>
+                <strong id="metricReceivable">R$ 0,00</strong>
+              </article>
+              <article class="metric-card">
+                <span>Compras de Estoque</span>
+                <strong id="metricInventoryPurchases">R$ 0,00</strong>
+              </article>
+              <article class="metric-card">
+                <span>Fluxo Operacional</span>
+                <strong id="metricOperatingCashflow">R$ 0,00</strong>
+              </article>
+              <article class="metric-card">
+                <span>Custo Confirmado</span>
+                <strong id="metricCost">R$ 0,00</strong>
+              </article>
+              <article class="metric-card">
+                <span>Lucro Bruto (Vendas)</span>
+                <strong id="metricProfit">R$ 0,00</strong>
+              </article>
+              <article class="metric-card">
+                <span>Margem (Vendas)</span>
+                <strong id="metricMargin">0%</strong>
+              </article>
+              <article class="metric-card">
+                <span>Pedidos Confirmados</span>
+                <strong id="metricConfirmed">0</strong>
+              </article>
+              <article class="metric-card">
+                <span>Pedidos Pendentes</span>
+                <strong id="metricPending">0</strong>
+              </article>
+              <article class="metric-card">
+                <span>Ticket Medio</span>
+                <strong id="metricTicket">R$ 0,00</strong>
+              </article>
+            </div>
+
+            <div class="dashboard-grid" style="margin-top: 10px">
+              <article class="panel" style="margin: 0">
+                <h3 style="margin-top: 0">Evolucao da Receita</h3>
+                <div id="revenueLineChart" class="line-chart-wrap"></div>
+              </article>
+              <article class="panel" style="margin: 0">
+                <h3 style="margin-top: 0">Distribuicao dos Pedidos</h3>
+                <div id="statusDistributionChart" class="status-chart-wrap"></div>
+              </article>
+            </div>
+
+            <article class="panel" style="margin-top: 10px">
+              <h3 style="margin-top: 0">Top 5 produtos por receita</h3>
+              <div id="topProductsChart" class="top-products-chart"></div>
+            </article>
+          </section>
+        </section>
+
+        <section class="admin-section" data-admin-section-content="orders">
+          <section class="panel">
+            <h2>Pedidos Pendentes (WhatsApp)</h2>
+            <div class="table-scroll">
+              <table class="admin-table orders-table">
+                <thead>
+                  <tr>
+                    <th>Pedido</th>
+                    <th>Cliente</th>
+                    <th>Contato</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Criado em</th>
+                    <th>Acoes</th>
+                  </tr>
+                </thead>
+                <tbody id="pendingOrdersBody"></tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+
+        <section class="admin-section" data-admin-section-content="production">
+          <section class="panel">
+            <h2>Producao e Entrega</h2>
+            <div class="table-scroll">
+              <table class="admin-table orders-table">
+                <thead>
+                  <tr>
+                    <th>Pedido</th>
+                    <th>Cliente</th>
+                    <th>Contato</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Criado em</th>
+                    <th>Acoes</th>
+                  </tr>
+                </thead>
+                <tbody id="productionOrdersBody"></tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+
+        <section class="admin-section" data-admin-section-content="orders-history">
+          <section class="panel">
+            <h2>Historico de Vendas</h2>
+            <div class="table-scroll">
+              <table class="admin-table orders-table">
+                <thead>
+                  <tr>
+                    <th>Pedido</th>
+                    <th>Cliente</th>
+                    <th>Contato</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Criado em</th>
+                    <th>Acoes</th>
+                  </tr>
+                </thead>
+                <tbody id="historyOrdersBody"></tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+
+        <section class="admin-section" data-admin-section-content="products">
+          <section class="panel">
+            <h2>Criar Categoria</h2>
+            <form id="categoryForm" class="form-grid">
+              <input type="text" id="categoryName" placeholder="Nome da categoria" required />
+              <button class="accent" type="submit">Salvar categoria</button>
+            </form>
+          </section>
+
+          <section class="panel">
+            <h2>Cadastrar Produto</h2>
+            <form id="productForm" class="form-grid" enctype="multipart/form-data">
+              <input type="text" id="name" name="name" placeholder="Nome" required />
+              <input type="number" id="price" name="price" placeholder="Preco" min="0" step="0.01" required />
+              <input
+                type="number"
+                id="costPrice"
+                name="cost_price"
+                placeholder="Custo de compra"
+                min="0"
+                step="0.01"
+                required
+              />
+              <textarea id="description" name="description" class="full" rows="3" placeholder="Descricao"></textarea>
+              <select id="categoryId" name="category_id" required></select>
+              <input type="file" id="image" name="image" accept="image/*" />
+              <button class="accent full" type="submit">Cadastrar produto</button>
+            </form>
+          </section>
+
+          <section class="panel">
+            <h2>Produtos Cadastrados</h2>
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nome</th>
+                  <th>Custo</th>
+                  <th>Preco</th>
+                  <th>Categoria</th>
+                  <th>Insight</th>
+                  <th>Acoes</th>
+                </tr>
+              </thead>
+              <tbody id="adminProductsBody"></tbody>
+            </table>
+          </section>
+
+        </section>
+
+        <section class="admin-section" data-admin-section-content="manual-sales">
+          <section class="panel">
+            <h2>Lançar Venda Manual</h2>
+            <form id="manualSaleForm" class="form-grid">
+              <input type="text" id="manualCustomerName" placeholder="Cliente (nome)" />
+              <input type="email" id="manualCustomerEmail" placeholder="Email do cliente" />
+              <input type="text" id="manualCustomerPhone" placeholder="Telefone do cliente" />
+              <select id="manualSaleChannel">
+                <option value="whatsapp">WhatsApp</option>
+                <option value="instagram">Instagram</option>
+                <option value="loja_fisica">Loja fisica</option>
+                <option value="site">Site</option>
+                <option value="outro">Outro</option>
+              </select>
+              <select id="manualSaleStatus">
+                <option value="pendente" selected>Pendente</option>
+                <option value="em_producao">Em producao</option>
+                <option value="pronto_entrega">Pronto para entrega</option>
+                <option value="entregue">Entregue</option>
+                <option value="cancelado">Cancelado</option>
+              </select>
+              <input id="manualInitialPaidAmount" type="number" min="0" step="0.01" placeholder="Valor recebido agora (opcional)" />
+              <select id="manualPaymentMethod">
+                <option value="pix">Pix</option>
+                <option value="cartao">Cartao</option>
+                <option value="dinheiro">Dinheiro</option>
+              </select>
+              <select id="manualPaymentType">
+                <option value="sinal">Sinal</option>
+                <option value="parcial" selected>Parcial</option>
+                <option value="saldo_entrega">Saldo na entrega</option>
+              </select>
+              <input id="manualPaymentNote" type="text" placeholder="Obs pagamento (opcional)" class="full" />
+              <input id="manualSaleNotes" type="text" class="full" placeholder="Observacoes da venda" />
+
+              <div class="panel full" style="margin: 0">
+                <div class="row-actions" style="justify-content: space-between; align-items: center">
+                  <strong>Itens da venda</strong>
+                  <button type="button" id="addManualSaleItemBtn" class="secondary">+ Adicionar item</button>
+                </div>
+                <div id="manualSaleItemsWrap" style="margin-top: 10px"></div>
+              </div>
+
+              <button class="accent full" type="submit">Lancar venda</button>
+            </form>
+          </section>
+        </section>
+
+        <section class="admin-section" data-admin-section-content="inventory-purchases">
+          <section class="panel">
+            <h2>Lancar Compra de Estoque</h2>
+            <form id="inventoryPurchaseForm" class="form-grid">
+              <select id="purchaseProductId" required></select>
+              <input type="text" id="purchaseSupplierName" placeholder="Fornecedor (opcional)" />
+              <input type="number" id="purchaseQuantity" min="1" step="1" placeholder="Quantidade" required />
+              <input type="number" id="purchaseUnitCost" min="0" step="0.01" placeholder="Custo unitario" required />
+              <input type="datetime-local" id="purchaseDateTime" />
+              <input type="text" id="purchaseNotes" class="full" placeholder="Observacoes (opcional)" />
+              <button class="accent full" type="submit">Salvar compra</button>
+            </form>
+          </section>
+
+          <section class="panel">
+            <h2>Historico de Compras de Estoque</h2>
+            <div class="table-scroll">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Data</th>
+                    <th>Produto</th>
+                    <th>Fornecedor</th>
+                    <th>Qtd</th>
+                    <th>Custo unit.</th>
+                    <th>Total</th>
+                    <th>Obs</th>
+                  </tr>
+                </thead>
+                <tbody id="inventoryPurchasesBody"></tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+
+        <section class="admin-section" data-admin-section-content="customers">
+          <section class="panel">
+            <h2>Relatorio de Clientes e Compras</h2>
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Cliente</th>
+                  <th>Email</th>
+                  <th>Telefone</th>
+                  <th>Pedidos</th>
+                  <th>Total gasto</th>
+                  <th>Ultima compra</th>
+                </tr>
+              </thead>
+              <tbody id="customersReportBody"></tbody>
+            </table>
+          </section>
+        </section>
+
+        <section class="admin-section" data-admin-section-content="security">
+          <section class="panel">
+            <a href="#" id="toggleChangePasswordLink" style="font-weight: 700; color: var(--ink-700)">
+              Alterar senha
+            </a>
+            <form id="adminChangePasswordForm" class="form-grid" style="display: none; margin-top: 12px">
+              <input type="password" id="adminCurrentPassword" placeholder="Senha atual" required />
+              <input type="password" id="adminNewPassword" placeholder="Nova senha (minimo 6)" required />
+              <button class="accent full" type="submit">Salvar nova senha</button>
+            </form>
+          </section>
+        </section>
+      </section>
+    </main>
+
+    <script src="/js/nav.js"></script>
+    <script src="/js/api.js"></script>
+    <script src="/js/admin.js"></script>
+  </body>
+</html>
+
