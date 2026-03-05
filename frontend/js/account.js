@@ -159,6 +159,12 @@ loginForm.addEventListener("submit", async (event) => {
 
 registerForm.addEventListener("submit", async (event) => {
   event.preventDefault();
+  const submitButton = registerForm.querySelector('button[type="submit"]');
+  if (submitButton) {
+    submitButton.disabled = true;
+    submitButton.textContent = "Criando conta...";
+  }
+
   try {
     await register(
       document.getElementById("registerName").value.trim(),
@@ -170,6 +176,11 @@ registerForm.addEventListener("submit", async (event) => {
     renderSession();
   } catch (error) {
     setMessage(error.message, true);
+  } finally {
+    if (submitButton) {
+      submitButton.disabled = false;
+      submitButton.textContent = "Criar conta";
+    }
   }
 });
 
