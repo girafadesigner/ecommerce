@@ -1,6 +1,6 @@
 function detectApiBaseUrl() {
   const productionApiByHost = {
-    "girafadesigner.github.io": "https://girafa-designer-ecommerce.onrender.com"
+    "girafadesigner.github.io": "https://ecommerce-obzu.onrender.com"
   };
   const { protocol, hostname, port } = window.location;
   const isLocalHost = hostname === "localhost" || hostname === "127.0.0.1";
