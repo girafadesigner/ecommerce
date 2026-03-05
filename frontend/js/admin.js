@@ -37,9 +37,16 @@ let cachedAdminProducts = [];
 let cachedCategories = [];
 let editingProductId = null;
 
+function getAdminLoginUrl() {
+  const path = String(window.location.pathname || "");
+  if (path.includes("/frontend/admin-panel.html")) return "./admin-login.html";
+  if (path.endsWith("/admin-panel.html")) return "./admin-login.html";
+  return "../";
+}
+
 const token = localStorage.getItem("gd_admin_token");
 if (!token) {
-  window.location.href = "../";
+  window.location.href = getAdminLoginUrl();
 }
 
 function setMessage(text, isError = false) {
@@ -1044,7 +1051,7 @@ document.addEventListener("click", async (event) => {
 document.getElementById("logoutBtn").addEventListener("click", (event) => {
   event.preventDefault();
   localStorage.removeItem("gd_admin_token");
-  window.location.href = "../";
+  window.location.href = getAdminLoginUrl();
 });
 
 refreshDashboardBtn?.addEventListener("click", async () => {
@@ -1072,7 +1079,16 @@ dashboardRange?.addEventListener("change", async () => {
     await loadInventoryPurchases();
     await loadCustomerReport();
   } catch (error) {
-    localStorage.removeItem("gd_admin_token");
-    window.location.href = "../";
+    const message = String(error?.message || "");
+    const isAuthError =
+      /token|nao autorizado|acesso nao autorizado|invalido|expirado|401/i.test(message);
+
+    if (isAuthError) {
+      localStorage.removeItem("gd_admin_token");
+      window.location.href = getAdminLoginUrl();
+      return;
+    }
+
+    setMessage(message || "Erro ao carregar o painel admin.", true);
   }
 })();

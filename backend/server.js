@@ -174,16 +174,28 @@ app.use("/api", customerRoutes);
 app.get("/cart", (_req, res) => {
   res.sendFile(path.join(__dirname, "..", "frontend", "cart.html"));
 });
+app.get("/cart/index.html", (_req, res) => {
+  res.sendFile(path.join(__dirname, "..", "frontend", "cart.html"));
+});
 
 app.get("/admin", (_req, res) => {
+  res.sendFile(path.join(__dirname, "..", "frontend", "admin-login.html"));
+});
+app.get("/admin/index.html", (_req, res) => {
   res.sendFile(path.join(__dirname, "..", "frontend", "admin-login.html"));
 });
 
 app.get("/admin/panel", (_req, res) => {
   res.sendFile(path.join(__dirname, "..", "frontend", "admin-panel.html"));
 });
+app.get("/admin/panel/index.html", (_req, res) => {
+  res.sendFile(path.join(__dirname, "..", "frontend", "admin-panel.html"));
+});
 
 app.get("/account", (_req, res) => {
+  res.sendFile(path.join(__dirname, "..", "frontend", "account.html"));
+});
+app.get("/account/index.html", (_req, res) => {
   res.sendFile(path.join(__dirname, "..", "frontend", "account.html"));
 });
 
