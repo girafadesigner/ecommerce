@@ -39,7 +39,7 @@ let editingProductId = null;
 
 const token = localStorage.getItem("gd_admin_token");
 if (!token) {
-  window.location.href = "/admin";
+  window.location.href = "./admin-login.html";
 }
 
 function setMessage(text, isError = false) {
@@ -1044,7 +1044,7 @@ document.addEventListener("click", async (event) => {
 document.getElementById("logoutBtn").addEventListener("click", (event) => {
   event.preventDefault();
   localStorage.removeItem("gd_admin_token");
-  window.location.href = "/admin";
+  window.location.href = "./admin-login.html";
 });
 
 refreshDashboardBtn?.addEventListener("click", async () => {
@@ -1073,6 +1073,6 @@ dashboardRange?.addEventListener("change", async () => {
     await loadCustomerReport();
   } catch (error) {
     localStorage.removeItem("gd_admin_token");
-    window.location.href = "/admin";
+    window.location.href = "./admin-login.html";
   }
 })();

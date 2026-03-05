@@ -108,7 +108,7 @@ async function checkoutViaWhatsapp() {
     const token = API.getCustomerToken();
     if (!token) {
       setPaymentMessage("Faca login em Conta para finalizar o pedido.", true);
-      window.location.href = "/account";
+      window.location.href = "./account.html";
       return;
     }
 

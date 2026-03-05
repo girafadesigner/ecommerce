@@ -69,7 +69,7 @@ async function loadProducts() {
     const card = document.createElement("article");
     card.className = "card";
     card.innerHTML = `
-      <img src="${product.image_url}" alt="${product.name}" />
+      <img src="${API.resolveAssetUrl(product.image_url)}" alt="${product.name}" />
       <div class="card-body">
         <h3>${product.name}</h3>
         <span class="category">${product.category_name || "Sem categoria"}</span>

@@ -19,7 +19,7 @@ loginForm.addEventListener("submit", async (event) => {
       body: JSON.stringify({ username, password })
     });
     localStorage.setItem("gd_admin_token", data.token);
-    window.location.href = "/admin/panel";
+    window.location.href = "./admin-panel.html";
   } catch (error) {
     setMessage(error.message, true);
   }

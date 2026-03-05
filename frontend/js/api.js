@@ -1,6 +1,27 @@
 const API = {
+  baseUrl:
+    String(window.GD_API_BASE_URL || localStorage.getItem("gd_api_base_url") || "")
+      .trim()
+      .replace(/\/+$/, ""),
+
+  resolveUrl(url) {
+    const raw = String(url || "").trim();
+    if (!raw) return raw;
+    if (/^https?:\/\//i.test(raw)) return raw;
+    if (!API.baseUrl) return raw;
+    return raw.startsWith("/") ? `${API.baseUrl}${raw}` : `${API.baseUrl}/${raw}`;
+  },
+
+  resolveAssetUrl(url) {
+    const raw = String(url || "").trim();
+    if (!raw) return raw;
+    if (/^https?:\/\//i.test(raw)) return raw;
+    if (!API.baseUrl) return raw;
+    return raw.startsWith("/") ? `${API.baseUrl}${raw}` : `${API.baseUrl}/${raw}`;
+  },
+
   async request(url, options = {}) {
-    const response = await fetch(url, options);
+    const response = await fetch(API.resolveUrl(url), options);
     const data = await response.json();
     if (!response.ok) {
       throw new Error(data.error || "Erro na requisicao.");

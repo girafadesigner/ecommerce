@@ -1,7 +1,13 @@
 function normalizePathname(pathname) {
-  const raw = String(pathname || "");
+  const raw = String(pathname || "").trim();
   if (!raw || raw === "/") return "/";
-  return raw.replace(/\/+$/, "");
+
+  const normalized = raw.replace(/\/+$/, "");
+  if (normalized.endsWith("/index.html")) {
+    return normalized.slice(0, -"/index.html".length) || "/";
+  }
+
+  return normalized;
 }
 
 function markActiveNavLink() {
@@ -10,12 +16,13 @@ function markActiveNavLink() {
 
   links.forEach((link) => {
     const href = link.getAttribute("href");
-    if (!href || !href.startsWith("/")) return;
+    if (!href || href.startsWith("#")) return;
 
-    const linkPath = normalizePathname(href);
-    const isActive =
-      currentPath === linkPath ||
-      (linkPath !== "/" && currentPath.startsWith(`${linkPath}/`));
+    const resolved = new URL(href, window.location.href);
+    if (resolved.origin !== window.location.origin) return;
+
+    const linkPath = normalizePathname(resolved.pathname);
+    const isActive = currentPath === linkPath;
 
     link.classList.toggle("is-active-nav", isActive);
     if (isActive) {
