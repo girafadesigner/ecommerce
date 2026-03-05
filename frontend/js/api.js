@@ -21,11 +21,51 @@ const API = {
   },
 
   async request(url, options = {}) {
-    const response = await fetch(API.resolveUrl(url), options);
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(data.error || "Erro na requisicao.");
+    const requestUrl = API.resolveUrl(url);
+    const response = await fetch(requestUrl, options);
+    const contentType = String(response.headers.get("content-type") || "").toLowerCase();
+    const rawBody = await response.text();
+
+    let data = null;
+    if (rawBody) {
+      if (contentType.includes("application/json")) {
+        try {
+          data = JSON.parse(rawBody);
+        } catch (_error) {
+          throw new Error("Resposta JSON invalida recebida da API.");
+        }
+      } else if (rawBody.trim().startsWith("{") || rawBody.trim().startsWith("[")) {
+        try {
+          data = JSON.parse(rawBody);
+        } catch (_error) {
+          data = null;
+        }
+      }
     }
+
+    if (!response.ok) {
+      if (data && typeof data === "object" && data.error) {
+        throw new Error(data.error);
+      }
+
+      if (rawBody.trim().startsWith("<")) {
+        throw new Error(
+          "A resposta da API veio em HTML. Verifique se o backend esta ativo e configure gd_api_base_url para a URL correta da API."
+        );
+      }
+
+      throw new Error(`Erro na requisicao (${response.status}).`);
+    }
+
+    if (!data) {
+      if (rawBody.trim().startsWith("<")) {
+        throw new Error(
+          "A resposta da API veio em HTML. Verifique se o backend esta ativo e configure gd_api_base_url para a URL correta da API."
+        );
+      }
+      throw new Error("Resposta inesperada da API.");
+    }
+
     return data;
   },
 
