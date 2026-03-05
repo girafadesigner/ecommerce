@@ -1,4 +1,11 @@
 function detectApiBaseUrl() {
+  const queryApiBaseUrl = new URLSearchParams(window.location.search).get("api_base_url");
+  if (queryApiBaseUrl && /^https?:\/\//i.test(queryApiBaseUrl.trim())) {
+    const normalized = queryApiBaseUrl.trim().replace(/\/+$/, "");
+    localStorage.setItem("gd_api_base_url", normalized);
+    return normalized;
+  }
+
   const configured = String(window.GD_API_BASE_URL || localStorage.getItem("gd_api_base_url") || "").trim();
   if (configured) return configured.replace(/\/+$/, "");
 
@@ -32,6 +39,17 @@ const API = {
   },
 
   async request(url, options = {}) {
+    const rawUrl = String(url || "").trim();
+    const host = String(window.location.hostname || "").toLowerCase();
+    const isGithubPages = host.endsWith("github.io");
+    const isApiPath = rawUrl.startsWith("/api") || rawUrl.startsWith("api/");
+
+    if (!API.baseUrl && isGithubPages && isApiPath) {
+      throw new Error(
+        "API nao configurada para o GitHub Pages. Defina gd_api_base_url com a URL do backend."
+      );
+    }
+
     const requestUrl = API.resolveUrl(url);
     const response = await fetch(requestUrl, options);
     const contentType = String(response.headers.get("content-type") || "").toLowerCase();
