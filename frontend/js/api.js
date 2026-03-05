@@ -1,8 +1,19 @@
+function detectApiBaseUrl() {
+  const configured = String(window.GD_API_BASE_URL || localStorage.getItem("gd_api_base_url") || "").trim();
+  if (configured) return configured.replace(/\/+$/, "");
+
+  const { protocol, hostname, port } = window.location;
+  const isLocalHost = hostname === "localhost" || hostname === "127.0.0.1";
+
+  if (protocol === "file:" || (isLocalHost && port !== "3000")) {
+    return "http://localhost:3000";
+  }
+
+  return "";
+}
+
 const API = {
-  baseUrl:
-    String(window.GD_API_BASE_URL || localStorage.getItem("gd_api_base_url") || "")
-      .trim()
-      .replace(/\/+$/, ""),
+  baseUrl: detectApiBaseUrl(),
 
   resolveUrl(url) {
     const raw = String(url || "").trim();
