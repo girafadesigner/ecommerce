@@ -60,7 +60,14 @@ const API = {
     }
 
     const requestUrl = API.resolveUrl(url);
-    const response = await fetch(requestUrl, options);
+    let response;
+    try {
+      response = await fetch(requestUrl, options);
+    } catch (_networkError) {
+      throw new Error(
+        "Falha de conexao com a API. Verifique se o backend esta ativo e se a URL da API esta correta."
+      );
+    }
     const contentType = String(response.headers.get("content-type") || "").toLowerCase();
     const rawBody = await response.text();
 
