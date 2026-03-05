@@ -1,4 +1,8 @@
 function detectApiBaseUrl() {
+  const productionApiByHost = {
+    "girafadesigner.github.io": "https://girafa-designer-ecommerce.onrender.com"
+  };
+
   const queryApiBaseUrl = new URLSearchParams(window.location.search).get("api_base_url");
   if (queryApiBaseUrl && /^https?:\/\//i.test(queryApiBaseUrl.trim())) {
     const normalized = queryApiBaseUrl.trim().replace(/\/+$/, "");
@@ -11,6 +15,11 @@ function detectApiBaseUrl() {
 
   const { protocol, hostname, port } = window.location;
   const isLocalHost = hostname === "localhost" || hostname === "127.0.0.1";
+  const mappedProductionApi = productionApiByHost[String(hostname || "").toLowerCase()];
+
+  if (mappedProductionApi) {
+    return mappedProductionApi.replace(/\/+$/, "");
+  }
 
   if (protocol === "file:" || (isLocalHost && port !== "3000")) {
     return "http://localhost:3000";

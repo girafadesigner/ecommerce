@@ -181,4 +181,6 @@ checkoutWhatsappBtn.addEventListener("click", checkoutViaWhatsapp);
   setCheckoutAuthState(false);
   await loadCustomerProfile();
   await loadCart();
-})();
+})().catch((error) => {
+  setPaymentMessage(String(error?.message || "Erro ao carregar carrinho."), true);
+});

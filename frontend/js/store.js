@@ -8,6 +8,13 @@ const heroPrevBtn = document.getElementById("heroPrevBtn");
 const heroNextBtn = document.getElementById("heroNextBtn");
 const heroDots = document.getElementById("heroDots");
 
+function renderLoadError(error) {
+  const message = String(error?.message || "Falha ao carregar o catalogo.");
+  if (productsGrid) {
+    productsGrid.innerHTML = `<div class="message error">${message}</div>`;
+  }
+}
+
 function updateAccountLink() {
   const profile = API.getCustomerProfile();
   const token = API.getCustomerToken();
@@ -163,4 +170,4 @@ document.getElementById("searchInput")?.addEventListener("keyup", (event) => {
   await loadCategories();
   await loadProducts();
   await syncCartWithBackend();
-})();
+})().catch(renderLoadError);
