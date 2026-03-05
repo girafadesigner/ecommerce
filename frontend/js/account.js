@@ -193,9 +193,13 @@ document.getElementById("sendCustomerCodeBtn").addEventListener("click", async (
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, channel })
     });
-    setMessage(
-      `${data.message} Canal: ${data.channel}. Destino: ${data.destination}. Expira em ${data.expiresInMinutes} min.`
-    );
+    const details = [];
+    if (data.channel) details.push(`Canal: ${data.channel}.`);
+    if (data.destination) details.push(`Destino: ${data.destination}.`);
+    if (Number.isFinite(Number(data.expiresInMinutes))) {
+      details.push(`Expira em ${Number(data.expiresInMinutes)} min.`);
+    }
+    setMessage([data.message, ...details].filter(Boolean).join(" "));
   } catch (error) {
     setMessage(error.message, true);
   }
