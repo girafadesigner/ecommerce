@@ -2,16 +2,20 @@ const jwt = require("jsonwebtoken");
 
 const NODE_ENV = String(process.env.NODE_ENV || "development").toLowerCase();
 const JWT_SECRET = String(process.env.JWT_SECRET || "").trim();
+const DEV_FALLBACK_SECRET = "dev-only-jwt-secret-change-me";
 
 function getJwtSecret() {
-  if (!JWT_SECRET) {
-    throw new Error(
-      NODE_ENV === "production"
-        ? "JWT_SECRET obrigatorio em producao."
-        : "JWT_SECRET obrigatorio. Defina no arquivo .env."
-    );
+  if (JWT_SECRET) {
+    return JWT_SECRET;
   }
-  return JWT_SECRET;
+
+  if (NODE_ENV === "production") {
+    throw new Error("JWT_SECRET obrigatorio em producao.");
+  }
+
+  // eslint-disable-next-line no-console
+  console.warn("JWT_SECRET ausente em desenvolvimento. Usando segredo temporario local.");
+  return DEV_FALLBACK_SECRET;
 }
 
 function generateToken(payload) {

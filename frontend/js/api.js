@@ -2,6 +2,8 @@ function detectApiBaseUrl() {
   const productionApiByHost = {
     "girafadesigner.github.io": "https://girafa-designer-ecommerce.onrender.com"
   };
+  const { protocol, hostname, port } = window.location;
+  const isLocalHost = hostname === "localhost" || hostname === "127.0.0.1";
 
   const queryApiBaseUrl = new URLSearchParams(window.location.search).get("api_base_url");
   if (queryApiBaseUrl && /^https?:\/\//i.test(queryApiBaseUrl.trim())) {
@@ -10,20 +12,25 @@ function detectApiBaseUrl() {
     return normalized;
   }
 
-  const configured = String(window.GD_API_BASE_URL || localStorage.getItem("gd_api_base_url") || "").trim();
+  const configured = String(localStorage.getItem("gd_api_base_url") || "").trim();
   if (configured) return configured.replace(/\/+$/, "");
 
-  const { protocol, hostname, port } = window.location;
-  const isLocalHost = hostname === "localhost" || hostname === "127.0.0.1";
-  const mappedProductionApi = productionApiByHost[String(hostname || "").toLowerCase()];
-
-  if (mappedProductionApi) {
-    return mappedProductionApi.replace(/\/+$/, "");
-  }
-
-  if (protocol === "file:" || (isLocalHost && port !== "3000")) {
+  if (protocol === "file:") {
     return "http://localhost:3000";
   }
+
+  if (isLocalHost) {
+    if (port && port !== "3000") {
+      return "http://localhost:3000";
+    }
+    return "";
+  }
+
+  const globalBase = String(window.GD_API_BASE_URL || "").trim();
+  if (globalBase) return globalBase.replace(/\/+$/, "");
+
+  const mappedProductionApi = productionApiByHost[String(hostname || "").toLowerCase()];
+  if (mappedProductionApi) return mappedProductionApi.replace(/\/+$/, "");
 
   return "";
 }

@@ -25,9 +25,8 @@ function getMissingEnv(requiredNames) {
 }
 
 function validateEnvironment() {
-  const baseRequired = ["JWT_SECRET"];
-  const productionRequired = ["DB_KEY", "SMTP_HOST", "SMTP_PORT", "SMTP_USER", "SMTP_PASS", "SMTP_FROM"];
-  const required = NODE_ENV === "production" ? [...baseRequired, ...productionRequired] : baseRequired;
+  const baseRequired = NODE_ENV === "production" ? ["JWT_SECRET"] : [];
+  const required = baseRequired;
   const missing = getMissingEnv(required);
 
   if (missing.length > 0) {

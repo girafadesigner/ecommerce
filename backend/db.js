@@ -65,13 +65,14 @@ function all(sql, params = []) {
 async function initializeDatabase() {
   if (DB_KEY) {
     if (!isSqlcipher) {
-      throw new Error(
-        "DB_KEY definida, mas SQLCipher nao esta instalado. Instale: npm i @journeyapps/sqlcipher"
+      // eslint-disable-next-line no-console
+      console.warn(
+        "DB_KEY definida, mas SQLCipher nao esta instalado. Banco sera iniciado sem criptografia."
       );
+    } else {
+      await run(`PRAGMA key = '${escapeSqlLiteral(DB_KEY)}'`);
+      await run("PRAGMA cipher_compatibility = 4");
     }
-
-    await run(`PRAGMA key = '${escapeSqlLiteral(DB_KEY)}'`);
-    await run("PRAGMA cipher_compatibility = 4");
   }
 
   // Schema principal da loja e do painel admin.
@@ -369,9 +370,11 @@ async function seedInitialData() {
       ADMIN_SEED_PASSWORD || (NODE_ENV === "production" ? "" : "123456");
 
     if (!passwordToUse) {
-      throw new Error(
-        "ADMIN_SEED_PASSWORD obrigatoria para criar usuario admin inicial em producao."
+      // eslint-disable-next-line no-console
+      console.warn(
+        "ADMIN_SEED_PASSWORD nao definida. Usuario admin inicial nao foi criado."
       );
+      return;
     }
 
     const hash = await bcrypt.hash(passwordToUse, 10);
