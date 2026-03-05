@@ -38,11 +38,6 @@ function validateEnvironment() {
     if (mockEnabled) {
       throw new Error("ENABLE_MOCK_NOTIFICATIONS=true nao pode ser usado em producao.");
     }
-
-    const corsOrigin = String(process.env.CORS_ORIGIN || "").trim();
-    if (!corsOrigin || corsOrigin === "*") {
-      throw new Error("Defina CORS_ORIGIN com o dominio real do frontend em producao.");
-    }
   }
 }
 
